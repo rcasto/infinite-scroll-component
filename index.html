@@ -1,0 +1,86 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Social Contact - Web Component</title>
+    <style>
+        .social-contact-container {
+            display: flex;
+            flex-direction: column;
+            padding: 6px;
+            border: 1px solid black;
+        }
+
+        .social-contact-container input {
+            margin-bottom: 6px;
+        }
+
+        .social-contact-render-button {
+            width: 100%;
+            padding: 6px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="social-contact-container">
+        <label for="github">GitHub Username</label>
+        <input type="text" name="github" id="github" value="rcasto">
+
+        <label for="linkedin">LinkedIn Username</label>
+        <input type="text" name="linkedin" id="linkedin" value="rcasto">
+
+        <label for="twitter">Twitter Username</label>
+        <input type="text" name="twitter" id="twitter">
+
+        <label for="facebook">Facebook Username</label>
+        <input type="text" name="facebook" id="facebook">
+
+        <label for="instagram">Instagram Username</label>
+        <input type="text" name="instagram" id="instagram">
+
+        <button class="social-contact-render-button">Render</button>
+    </div>
+
+    <div class="social-contact-render-location">
+        <!-- The social network info is passed to the WebComponent
+        via attributes, simply provide your username for the corresponding social network -->
+        <social-contact github="rcasto" linkedin="rcasto"></social-contact>
+    </div>
+
+    <script async src="https://cdn.jsdelivr.net/npm/social-contact@1.0.5/dist/socialcontact.min.js"></script>
+    <!-- <script async src="dist/socialcontact.js"></script> -->
+
+    <script>
+        window.addEventListener('load', () => {
+            const socialContactRenderContainer = document.querySelector('.social-contact-render-location');
+            let socialContact = document.querySelector('social-contact');
+
+            // social contact inputs
+            const githubInput = document.querySelector('#github');
+            const linkedinInput = document.querySelector('#linkedin');
+            const twitterInput = document.querySelector('#twitter');
+            const facebookInput = document.querySelector('#facebook');
+            const instagramInput = document.querySelector('#instagram');
+
+            const socialContactRenderButton = document.querySelector('.social-contact-render-button');
+
+            socialContactRenderButton.addEventListener('click', () => {
+                socialContact.remove();
+
+                socialContact = document.createElement('social-contact');
+                socialContact.setAttribute('github', githubInput.value);
+                socialContact.setAttribute('linkedin', linkedinInput.value);
+                socialContact.setAttribute('twitter', twitterInput.value);
+                socialContact.setAttribute('facebook', facebookInput.value);
+                socialContact.setAttribute('instagram', instagramInput.value);
+
+                socialContactRenderContainer.appendChild(socialContact);
+            });
+        });
+    </script>
+</body>
+
+</html>
