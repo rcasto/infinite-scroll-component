@@ -17,7 +17,7 @@
   },
   "scripts": {
     "start": "npm-run-all clean --parallel start:server start:dev",
-    "start:server": "http-server ./",
+    "start:server": "http-server -p 8080 ./",
     "start:dev": "npm run build:dev -- --watch",
     "build": "npm-run-all clean --parallel build:*",
     "build:dev": "rollup --config rollup/rollup.config.dev.js",

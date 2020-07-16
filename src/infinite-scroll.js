@@ -1,8 +1,8 @@
 export default class InfiniteScroll extends HTMLElement {
     static template = `
-        <style>
-        </style>
-        <slot></slot>
+        <div>
+            <slot>No content to scroll</slot>
+        </div>
     `;
     /**
      * @type {HTMLTemplateElement}
@@ -24,6 +24,21 @@ export default class InfiniteScroll extends HTMLElement {
         const templateClone = InfiniteScroll.templateElem.content.cloneNode(true);
 
         shadowRoot.appendChild(templateClone);
+
+        const containerDiv = shadowRoot.querySelector('div');
+        window.addEventListener('scroll', () => {
+            let ticking = false;
+
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    console.log(containerDiv.clientHeight);
+                    console.log(containerDiv.scrollHeight);
+
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        });
     }
 }
 
