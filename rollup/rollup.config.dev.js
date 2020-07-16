@@ -1,19 +1,19 @@
-import commonConfig from './rollup.config';
+import commonConfig, { bundleGlobal, bundleName } from './rollup.config';
 
 const config = {
     ...commonConfig,
     output: [
 		{
-			name: 'SocialContact',
-			file: 'dist/socialcontact.js',
+			name: bundleGlobal,
+			file: `dist/${bundleName}.js`,
 			format: 'iife'
 		},
 		{
-			file: 'dist/socialcontact.es.js',
+			file: `dist/${bundleName}.es.js`,
 			format: 'es'
 		},
 		{
-			file: 'dist/socialcontact.cjs.js',
+			file: `dist/${bundleName}.cjs.js`,
 			format: 'cjs'
 		}
 	]

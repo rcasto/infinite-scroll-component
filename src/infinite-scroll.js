@@ -1,34 +1,41 @@
-const templateContent = `
-  <style>
-  </style>
-  <div class="social-contact-container"></div>
-`;
-
-const template = document.createElement('template');
-template.innerHTML = templateContent;
-
 export default class InfiniteScroll extends HTMLElement {
+    static template = `
+        <style>
+        </style>
+        <slot></slot>
+    `;
+    /**
+     * @type {HTMLTemplateElement}
+     */
+    static templateElem = null;
+
     constructor() {
         super();
+
+        if (!InfiniteScroll.templateElem) {
+            InfiniteScroll.templateElem = document.createElement('template');
+            InfiniteScroll.templateElem.innerHTML = InfiniteScroll.template;
+        }
     }
     connectedCallback() {
         const shadowRoot = this.attachShadow({
             mode: 'open'
         });
-        const socialContactTemplateClone = template.content.cloneNode(true);
-        const socialContactContainer = socialContactTemplateClone.querySelector('.social-contact-container');
+        const templateClone = InfiniteScroll.templateElem.content.cloneNode(true);
 
-        shadowRoot.appendChild(socialContactTemplateClone);
+        shadowRoot.appendChild(templateClone);
     }
 }
 
 /*
   Register or associate the web component
-  with a <social-contact></social-contact> element
+  with a <infinite-scroll></infinite-scroll> element
 */
-try {
-    customElements.define('social-contact', SocialContact);
-} catch (err) {
-    // https://developer.mozilla.org/en-US/docs/Web/API/CustomElementRegistry/define#Exceptions
-    console.error(err);
-}
+(function () {
+    const customElementName = 'infinite-scroll';
+    if (customElements.get(customElementName)) {
+        console.error(`There is already a custom element registered under the name ${customElementName}`);
+    } else {
+        customElements.define(customElementName, InfiniteScroll);
+    }
+}());
