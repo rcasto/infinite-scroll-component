@@ -26,13 +26,18 @@ export default class InfiniteScroll extends HTMLElement {
         shadowRoot.appendChild(templateClone);
 
         const containerDiv = shadowRoot.querySelector('div');
+
+        // detect if element itself is scrollable?
+        // console.log(containerDiv.style.overflow, containerDiv.style.overflowY);
+        // console.log(this.parentElement, this.parentElement === document.body);
+
         window.addEventListener('scroll', () => {
             let ticking = false;
 
             if (!ticking) {
                 window.requestAnimationFrame(() => {
-                    console.log(containerDiv.clientHeight);
-                    console.log(containerDiv.scrollHeight);
+                    // console.log((containerDiv.scrollTop + containerDiv.clientHeight) / containerDiv.scrollHeight);
+                    console.log(document.body.scrollTop, document.body.clientHeight, document.body.scrollHeight);
 
                     ticking = false;
                 });
