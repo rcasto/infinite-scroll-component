@@ -9,6 +9,11 @@ const config = {
 			format: 'iife'
 		},
 		{
+			name: bundleGlobal,
+			file: `public/${bundleName}.js`,
+			format: 'iife'
+		},
+		{
 			file: `dist/${bundleName}.es.js`,
 			format: 'es'
 		},
