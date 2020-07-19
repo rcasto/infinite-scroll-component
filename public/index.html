@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>infinite-scroll - Web Component</title>
+    <style>
+        img {
+            display: block;
+            width: 100%;
+        }
+    </style>
 </head>
 
 <body>
@@ -20,6 +26,15 @@
     </infinite-scroll>
 
     <script async src="infinite-scroll.js"></script>
+    <script>
+        // window.addEventListener('infinite-scroll-fetch', () => {
+        //     console.log('inifinite-scroll-fetch event fired');
+        // });
+
+        document.body.addEventListener('infinite-scroll-fetch', () => {
+            console.log('inifinite-scroll-fetch event fired');
+        });
+    </script>
 </body>
 
 </html>
