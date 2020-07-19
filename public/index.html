@@ -18,6 +18,8 @@
 
     <script async src="infinite-scroll.js"></script>
     <script>
+        let isFetching = false;
+
         function getRandomPhotos(count = 10) {
             const clientId = 'deea1bceea41766980efc6ca71d7925aaa3d496a8ec0a2e4313d8e61b8dfe62f';
             const unsplashApiUrl = `https://api.unsplash.com/photos/random?count=${count}`;
@@ -37,7 +39,11 @@
         }
 
         async function init() {
-            console.log('inifinite-scroll-fetch event fired');
+            if (isFetching) {
+                return;
+            }
+
+            isFetching = true;
 
             const imageUrls = await getRandomPhotos();
             const fragment = document.createDocumentFragment();
@@ -48,6 +54,8 @@
             });
 
             infiniteScrollElem.appendChild(fragment);
+
+            isFetching = false;
         }
 
         const infiniteScrollElem = document.querySelector('infinite-scroll');
