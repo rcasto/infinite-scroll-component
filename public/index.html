@@ -14,26 +14,46 @@
 </head>
 
 <body>
-    <infinite-scroll>
-        <!-- Populate with your initial content to show -->
-        <img src="images/image1.jpg" alt="">
-        <img src="images/image2.jpg" alt="">
-        <img src="images/image3.jpg" alt="">
-        <img src="images/image4.jpg" alt="">
-
-        <!-- Custom event to fire when reaching scrolling threshold and need to load next page -->
-        <!-- Custom even can also pass DOM element? Contents can be added to the infinite-scroll container -->
-    </infinite-scroll>
+    <infinite-scroll></infinite-scroll>
 
     <script async src="infinite-scroll.js"></script>
     <script>
-        // window.addEventListener('infinite-scroll-fetch', () => {
-        //     console.log('inifinite-scroll-fetch event fired');
-        // });
+        function getRandomPhotos(count = 10) {
+            const clientId = 'deea1bceea41766980efc6ca71d7925aaa3d496a8ec0a2e4313d8e61b8dfe62f';
+            const unsplashApiUrl = `https://api.unsplash.com/photos/random?count=${count}`;
+            return fetch(unsplashApiUrl, {
+                headers: {
+                    'Authorization': `Client-ID ${clientId}`,
+                },
+            })
+            .then(response => response.json())
+            .then(images => images.map(image => image.urls.raw));
+        }
 
-        document.body.addEventListener('infinite-scroll-fetch', () => {
+        function createImageElem(url) {
+            const image = document.createElement('img');
+            image.src = url;
+            return image;
+        }
+
+        async function init() {
             console.log('inifinite-scroll-fetch event fired');
-        });
+
+            const imageUrls = await getRandomPhotos();
+            const fragment = document.createDocumentFragment();
+
+            imageUrls.forEach(url => {
+                const imageElem = createImageElem(url);
+                fragment.appendChild(imageElem);
+            });
+
+            infiniteScrollElem.appendChild(fragment);
+        }
+
+        const infiniteScrollElem = document.querySelector('infinite-scroll');
+        document.body.addEventListener('infinite-scroll-fetch', init);
+
+        init();
     </script>
 </body>
 
