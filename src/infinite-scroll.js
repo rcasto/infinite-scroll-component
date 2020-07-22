@@ -1,6 +1,5 @@
-const thresholdLimit = .85;
-
 export default class InfiniteScroll extends HTMLElement {
+    static thresholdLimit = .85;
     static template = `
         <div>
             <slot>No content to scroll</slot>
@@ -27,35 +26,23 @@ export default class InfiniteScroll extends HTMLElement {
 
         shadowRoot.appendChild(templateClone);
 
-        const containerDiv = shadowRoot.querySelector('div');
-
-        // detect if element itself is scrollable?
-        // console.log(containerDiv.style.overflow, containerDiv.style.overflowY);
-        // console.log(this.parentElement, this.parentElement === document.body);
-
         window.addEventListener('scroll', () => {
             let ticking = false;
 
             if (!ticking) {
                 window.requestAnimationFrame(() => {
-                    // console.log((containerDiv.scrollTop + containerDiv.clientHeight) / containerDiv.scrollHeight);
-                    // console.log(document.body.scrollTop + document.body.clientHeight, document.body.scrollHeight);
-                    // console.log((document.body.scrollTop + document.body.clientHeight) / document.body.scrollHeight);
-
                     const currentThreshold = (document.body.scrollTop + document.body.clientHeight) / document.body.scrollHeight;
 
                     // May only want to fire once, when the threshold is reached
                     // As of now it would fire mutliple times
-                    if (currentThreshold >= thresholdLimit) {
-                        console.log('Threshold Reached!');
-
+                    if (currentThreshold >= InfiniteScroll.thresholdLimit) {
                         const event = new Event('infinite-scroll-fetch');
-                        // window.dispatchEvent(event);
                         document.body.dispatchEvent(event);
                     }
 
                     ticking = false;
                 });
+
                 ticking = true;
             }
         });
