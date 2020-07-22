@@ -9,6 +9,7 @@
         img {
             display: block;
             width: 100%;
+            min-height: 200px;
         }
     </style>
 </head>
@@ -33,13 +34,9 @@
         }
 
         function createImageElem(url) {
-            return new Promise((resolve, reject) => {
-                const image = document.createElement('img');
-                image.src = url;
-                image.onload = () => resolve(image);
-                image.onerror = reject;
-                return image;
-            });
+            const image = document.createElement('img');
+            image.src = url;
+            return image;
         }
 
         async function init() {
@@ -50,7 +47,7 @@
             isFetching = true;
 
             const imageUrls = await getRandomPhotos();
-            const imageElems = await Promise.all(imageUrls.map(imageUrl => createImageElem(imageUrl)));
+            const imageElems = imageUrls.map(imageUrl => createImageElem(imageUrl));
 
             const fragment = document.createDocumentFragment();
             imageElems.forEach(imageElem => {
