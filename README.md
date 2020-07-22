@@ -1,2 +1,2 @@
 # inifinite-scroll
-A web component for infinite scrolling content.
+A little web component for infinite scrolling.

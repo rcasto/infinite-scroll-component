@@ -26,6 +26,16 @@
     "prepublishOnly": "npm run build"
   },
   "author": "Richie Casto (https://github.com/rcasto)",
-  "keywords": [],
+  "homepage": "https://github.com/rcasto/infinite-scroll#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rcasto/infinite-scroll.git"
+  },
+  "keywords": [
+    "infinite-scroll",
+    "scroll",
+    "scrolling",
+    "web-component"
+  ],
   "license": "MIT"
 }
