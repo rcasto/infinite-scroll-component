@@ -1,7 +1,7 @@
 {
   "name": "infinite-scroll",
   "version": "0.0.1",
-  "description": "A web component for infinite scrolling.",
+  "description": "A little web component for infinite scrolling.",
   "main": "index.js",
   "dependencies": {},
   "devDependencies": {
