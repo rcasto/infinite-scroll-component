@@ -15,7 +15,7 @@
 </head>
 
 <body>
-    <infinite-scroll></infinite-scroll>
+    <infinite-scroll data-height="200" data-threshold=".9"></infinite-scroll>
 
     <script async src="infinite-scroll.js"></script>
     <script>
@@ -59,7 +59,7 @@
         }
 
         const infiniteScrollElem = document.querySelector('infinite-scroll');
-        document.body.addEventListener('infinite-scroll-fetch', init);
+        window.addEventListener('infinite-scroll-fetch', init);
 
         init();
     </script>
