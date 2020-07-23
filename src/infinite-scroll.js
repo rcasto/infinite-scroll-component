@@ -32,6 +32,8 @@ export default class InfiniteScroll extends HTMLElement {
         this.divContentElem = null;
         this.thresholdLimit = 0.85;
         this.divContainerHeight = null;
+
+        this.boundScrollTick = () => this.scrollTick();
     }
     connectedCallback() {
         const shadowRoot = this.attachShadow({
@@ -43,27 +45,6 @@ export default class InfiniteScroll extends HTMLElement {
 
         this.divContentElem = shadowRoot.querySelector('div');
         this.setDivContainerHeight();
-
-        window.addEventListener('scroll', () => {
-            let ticking = false;
-
-            if (!ticking) {
-                window.requestAnimationFrame(() => {
-                    const currentThreshold = (window.scrollY + window.innerHeight) / this.divContentElem.scrollHeight;
-
-                    // May only want to fire once, when the threshold is reached
-                    // As of now it would fire mutliple times
-                    if (currentThreshold >= this.thresholdLimit) {
-                        const event = new Event('infinite-scroll-fetch');
-                        window.dispatchEvent(event);
-                    }
-
-                    ticking = false;
-                });
-
-                ticking = true;
-            }
-        });
     }
     attributeChangedCallback(name, _, newValue) {
         if (name === 'data-height') {
@@ -80,7 +61,38 @@ export default class InfiniteScroll extends HTMLElement {
         if (!this.divContentElem) {
             return;
         }
-        this.divContentElem.style.height = height;
+        if (typeof this.divContainerHeight === 'string') {
+            this.divContentElem.addEventListener('scroll', this.boundScrollTick);
+            window.removeEventListener('scroll', this.boundScrollTick);
+        } else {
+            window.addEventListener('scroll', this.boundScrollTick);
+            this.divContentElem.removeEventListener('scroll', this.boundScrollTick);
+        }
+        this.divContentElem.style.height = this.divContainerHeight;
+    }
+    scrollTick() {
+        let ticking = false;
+
+        if (!ticking) {
+            window.requestAnimationFrame(() => {
+                let currentThreshold = (window.scrollY + window.innerHeight) / this.divContentElem.scrollHeight;
+
+                if (typeof this.divContainerHeight === 'string') {
+                    currentThreshold = (this.divContentElem.scrollTop + this.divContentElem.clientHeight) / this.divContentElem.scrollHeight;
+                } 
+
+                // May only want to fire once, when the threshold is reached
+                // As of now it would fire mutliple times
+                if (currentThreshold >= this.thresholdLimit) {
+                    const event = new Event('infinite-scroll-fetch');
+                    window.dispatchEvent(event);
+                }
+
+                ticking = false;
+            });
+
+            ticking = true;
+        }
     }
 }
 
