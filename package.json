@@ -1,5 +1,6 @@
 {
   "name": "infinite-scroll-component",
+  "type": "module",
   "version": "0.0.1",
   "description": "A little web component for infinite scrolling.",
   "main": "index.js",
