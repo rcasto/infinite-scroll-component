@@ -62,7 +62,7 @@ export default class InfiniteScroll extends HTMLElement {
             }
         }
     }
-    setDivContainerHeight(height = this.divContentElem?.style.height) {
+    setDivContainerHeight(height = this.getAttribute('data-height')) {
         if (!this.divContentElem) {
             return;
         }
