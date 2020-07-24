@@ -80,7 +80,7 @@ export default class InfiniteScroll extends HTMLElement {
             this.scrollAnimationTick = window.requestAnimationFrame(() => {
                 let currentThreshold = (window.scrollY + window.innerHeight) / this.divContentElem.scrollHeight;
 
-                if (this.divContentElem?.style.height) {
+                if (this.divContentElem.style.height) {
                     currentThreshold = (this.divContentElem.scrollTop + this.divContentElem.clientHeight) / this.divContentElem.scrollHeight;
                 } 
 
