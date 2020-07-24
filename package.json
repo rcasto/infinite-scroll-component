@@ -9,6 +9,7 @@
     "@babel/plugin-proposal-class-properties": "7.10.4",
     "@babel/preset-env": "7.10.4",
     "@rollup/plugin-babel": "5.1.0",
+    "@types/jest": "26.0.7",
     "http-server": "0.12.3",
     "jest": "26.1.0",
     "npm-run-all": "4.1.5",
@@ -24,7 +25,8 @@
     "build:dev": "rollup --config rollup/rollup.config.dev.js",
     "build:prod": "rollup --config rollup/rollup.config.prod.js",
     "clean": "rimraf dist",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "test": "jest"
   },
   "author": "Richie Casto (https://github.com/rcasto)",
   "homepage": "https://github.com/rcasto/infinite-scroll#readme",
