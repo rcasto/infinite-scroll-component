@@ -48,6 +48,7 @@ describe('infinite-scroll Tests', () => {
     describe('disconnectedCallback tests', () => {
         it('can cleanup', () => {
             const windowRemoveEventListenerSpy = jest.spyOn(window, 'removeEventListener');
+            const windowCancelAnimationFrameSpy = jest.spyOn(window, 'cancelAnimationFrame');
     
             const infiniteScroll = new InfinteScroll();
     
@@ -58,6 +59,8 @@ describe('infinite-scroll Tests', () => {
     
             expect(windowRemoveEventListenerSpy).toHaveBeenCalledWith('scroll', infiniteScroll.boundScrollTick);
             expect(divContentElemRemoveEventListenerSpy).toHaveBeenCalledWith('scroll', infiniteScroll.boundScrollTick);
+            expect(windowCancelAnimationFrameSpy).toHaveBeenCalledWith(infiniteScroll.scrollAnimationTick);
+            expect(infiniteScroll.scrollAnimationTick).toBeNull();
         });
     });
 
@@ -148,6 +151,27 @@ describe('infinite-scroll Tests', () => {
             infiniteScroll.attributeChangedCallback('data-threshold', null, '10');
             
             expect(infiniteScroll.thresholdLimit).toEqual(1);
+        });
+    });
+
+    describe('scrollTick tests', () => {
+        it('can tick calling requestAnimationFrame', () => {
+            const requestAnimationFrameSpy = jest.spyOn(window, 'requestAnimationFrame');
+            const infiniteScroll = new InfinteScroll();
+
+            infiniteScroll.scrollTick();
+
+            expect(requestAnimationFrameSpy).toHaveBeenCalledTimes(1);
+        });
+
+        it('can only tick once per animation frame with mutliple successive calls', () => {
+            const requestAnimationFrameSpy = jest.spyOn(window, 'requestAnimationFrame');
+            const infiniteScroll = new InfinteScroll();
+
+            infiniteScroll.scrollTick();
+            infiniteScroll.scrollTick();
+
+            expect(requestAnimationFrameSpy).toHaveBeenCalledTimes(1);
         });
     });
 
