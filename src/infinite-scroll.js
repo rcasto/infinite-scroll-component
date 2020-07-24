@@ -31,7 +31,6 @@ export default class InfiniteScroll extends HTMLElement {
 
         this.divContentElem = null;
         this.thresholdLimit = 0.85;
-        this.divContainerHeight = null;
         this.scrollAnimationTick = null;
         this.boundScrollTick = () => this.scrollTick();
     }
@@ -63,26 +62,25 @@ export default class InfiniteScroll extends HTMLElement {
             }
         }
     }
-    setDivContainerHeight(height = this.divContainerHeight) {
-        this.divContainerHeight = height;
+    setDivContainerHeight(height = this.divContentElem?.style.height) {
         if (!this.divContentElem) {
             return;
         }
-        if (typeof this.divContainerHeight === 'string') {
+        if (height) {
             this.divContentElem.addEventListener('scroll', this.boundScrollTick);
             window.removeEventListener('scroll', this.boundScrollTick);
         } else {
             window.addEventListener('scroll', this.boundScrollTick);
             this.divContentElem.removeEventListener('scroll', this.boundScrollTick);
         }
-        this.divContentElem.style.height = this.divContainerHeight;
+        this.divContentElem.style.height = height;
     }
     scrollTick() {
         if (!this.scrollAnimationTick) {
             this.scrollAnimationTick = window.requestAnimationFrame(() => {
                 let currentThreshold = (window.scrollY + window.innerHeight) / this.divContentElem.scrollHeight;
 
-                if (typeof this.divContainerHeight === 'string') {
+                if (this.divContentElem?.style.height) {
                     currentThreshold = (this.divContentElem.scrollTop + this.divContentElem.clientHeight) / this.divContentElem.scrollHeight;
                 } 
 
