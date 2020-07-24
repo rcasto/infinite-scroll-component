@@ -46,6 +46,10 @@ export default class InfiniteScroll extends HTMLElement {
         this.divContentElem = shadowRoot.querySelector('div');
         this.setDivContainerHeight();
     }
+    disconnectedCallback() {
+        window.removeEventListener('scroll', this.boundScrollTick);
+        this.divContentElem.removeEventListener('scroll', this.boundScrollTick);
+    }
     attributeChangedCallback(name, _, newValue) {
         if (name === 'data-height') {
             this.setDivContainerHeight(newValue);

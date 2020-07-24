@@ -39,6 +39,20 @@ describe('infinite-scroll Tests', () => {
         expect(setDivContainerHeightSpy).toHaveBeenCalledTimes(1);
     });
 
+    it('disconnectedCallback - can cleanup', () => {
+        const windowRemoveEventListenerSpy = jest.spyOn(window, 'removeEventListener');
+
+        const infiniteScroll = new InfinteScroll();
+
+        infiniteScroll.connectedCallback();
+        const divContentElemRemoveEventListenerSpy = jest.spyOn(infiniteScroll.divContentElem, 'removeEventListener');
+
+        infiniteScroll.disconnectedCallback();
+
+        expect(windowRemoveEventListenerSpy).toHaveBeenCalledWith('scroll', infiniteScroll.boundScrollTick);
+        expect(divContentElemRemoveEventListenerSpy).toHaveBeenCalledWith('scroll', infiniteScroll.boundScrollTick);
+    });
+
     it('setDivContainerHeight - can handle no divContentElem set', () => {
         const windowAddEventListenerSpy = jest.spyOn(window, 'addEventListener');
         const windowRemoveEventListenerSpy = jest.spyOn(window, 'removeEventListener');
@@ -79,5 +93,9 @@ describe('infinite-scroll Tests', () => {
         expect(divContentElemAddEventListenerSpy).toHaveBeenCalledWith('scroll', infiniteScroll.boundScrollTick);
         expect(windowRemoveEventListenerSpy).toHaveBeenCalledWith('scroll', infiniteScroll.boundScrollTick);
         expect(infiniteScroll.divContentElem.style.height).toEqual('200px');
+    });
+
+    afterEach(() => {
+        jest.clearAllMocks();
     });
 });
