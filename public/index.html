@@ -15,22 +15,17 @@
 </head>
 
 <body>
-    <infinite-scroll data-height="200" data-threshold=".9"></infinite-scroll>
+    <infinite-scroll data-threshold=".9"></infinite-scroll>
 
     <script async src="infinite-scroll.js"></script>
     <script>
         let isFetching = false;
 
-        function getRandomPhotos(count = 10) {
-            const clientId = 'deea1bceea41766980efc6ca71d7925aaa3d496a8ec0a2e4313d8e61b8dfe62f';
-            const unsplashApiUrl = `https://api.unsplash.com/photos/random?count=${count}`;
-            return fetch(unsplashApiUrl, {
-                headers: {
-                    'Authorization': `Client-ID ${clientId}`,
-                },
-            })
+        function getRandomMemes(count = 10) {
+            const memeApiUrl = `https://meme-api.herokuapp.com/gimme/${count}`;
+            return fetch(memeApiUrl)
                 .then(response => response.json())
-                .then(images => images.map(image => image.urls.raw));
+                .then(result => result.memes.map(meme => meme.url));
         }
 
         function createImageElem(url) {
@@ -46,8 +41,8 @@
 
             isFetching = true;
 
-            const imageUrls = await getRandomPhotos();
-            const imageElems = imageUrls.map(imageUrl => createImageElem(imageUrl));
+            const memeUrls = await getRandomMemes();
+            const imageElems = memeUrls.map(memeUrl => createImageElem(memeUrl));
 
             const fragment = document.createDocumentFragment();
             imageElems.forEach(imageElem => {
