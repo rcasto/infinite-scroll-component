@@ -151,6 +151,14 @@ describe('infinite-scroll Tests', () => {
             
             expect(infiniteScroll.thresholdLimit).toEqual(1);
         });
+
+        it('can handle data-threshold change - must be greater than 0, uses default/previous if not', () => {
+            const infiniteScroll = new InfinteScroll();
+    
+            infiniteScroll.attributeChangedCallback('data-threshold', null, '0');
+            
+            expect(infiniteScroll.thresholdLimit).toEqual(0.85);
+        });
     });
 
     describe('scrollTick tests', () => {

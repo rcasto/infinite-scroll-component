@@ -57,7 +57,7 @@ export default class InfiniteScroll extends HTMLElement {
             this.setDivContainerHeight(newValue);
         } else if (name === 'data-threshold') {
             const thresholdLimit = parseFloat(newValue) || this.thresholdLimit;
-            if (thresholdLimit >= 0 && thresholdLimit <= 1) {
+            if (thresholdLimit > 0 && thresholdLimit <= 1) {
                 this.thresholdLimit = thresholdLimit;
             }
         }
