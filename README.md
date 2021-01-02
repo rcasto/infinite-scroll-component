@@ -2,7 +2,7 @@
 A little web component for infinite scrolling.
 
 [Example codepen - Unsplash images](https://codepen.io/rcasto/full/eYJxepG)  
-[Another example - Infinite memes](https://rcasto.github.io/infinite-scroll-component)
+[Another example - Infinite memes](https://rcasto.github.io/infinite-scroll/)
 ## Getting Started
 
 ### npm
