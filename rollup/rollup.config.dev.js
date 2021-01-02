@@ -10,7 +10,7 @@ const config = {
 		},
 		{
 			name: bundleGlobal,
-			file: `public/${bundleName}.js`,
+			file: `docs/${bundleName}.js`,
 			format: 'iife'
 		},
 		{
