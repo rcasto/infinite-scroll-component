@@ -17,7 +17,8 @@
 <body>
     <infinite-scroll data-threshold=".9"></infinite-scroll>
 
-    <script async src="infinite-scroll.js"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/infinite-scroll-component@0.0.3/dist/infinite-scroll.min.js"></script>
+    <!-- <script defer src="infinite-scroll.js"></script> -->
     <script>
         function getRandomMemes(count = 10) {
             const memeApiUrl = `https://meme-api.herokuapp.com/gimme/${count}`;
