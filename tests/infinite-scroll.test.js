@@ -201,6 +201,7 @@ describe('infinite-scroll Tests', () => {
 
             expect(dispatchEventSpy).not.toHaveBeenCalled();
             expect(infiniteScroll.scrollAnimationTick).toBeNull();
+            expect(infiniteScroll.hasBreachedThreshold).toBeFalsy();
         });
 
         it('can fire event when threshold is met, no container height set', () => {
@@ -224,6 +225,7 @@ describe('infinite-scroll Tests', () => {
             expect(dispatchEventSpy).toHaveBeenCalledTimes(1);
             expect(dispatchEventSpy.mock.calls[0][0].type).toEqual('infinite-scroll-fetch');
             expect(infiniteScroll.scrollAnimationTick).toBeNull();
+            expect(infiniteScroll.hasBreachedThreshold).toBeTruthy();
         });
 
         it('can avoid firing event when threshold is not met, container height set', () => {
@@ -249,6 +251,7 @@ describe('infinite-scroll Tests', () => {
 
             expect(dispatchEventSpy).not.toHaveBeenCalled();
             expect(infiniteScroll.scrollAnimationTick).toBeNull();
+            expect(infiniteScroll.hasBreachedThreshold).toBeFalsy();
         });
 
         it('can fire event when threshold is met, container height set', () => {
@@ -275,6 +278,31 @@ describe('infinite-scroll Tests', () => {
             expect(dispatchEventSpy).toHaveBeenCalledTimes(1);
             expect(dispatchEventSpy.mock.calls[0][0].type).toEqual('infinite-scroll-fetch');
             expect(infiniteScroll.scrollAnimationTick).toBeNull();
+            expect(infiniteScroll.hasBreachedThreshold).toBeTruthy();
+        });
+
+        it('can avoid firing event again once it has already been fired when threshold was met', () => {
+            const dispatchEventSpy = jest.spyOn(window, 'dispatchEvent');
+            const requestAnimationFrameSpy = jest.spyOn(window, 'requestAnimationFrame');
+            const infiniteScroll = new InfinteScroll();
+
+            infiniteScroll.connectedCallback();
+            infiniteScroll.scrollTick();
+
+            const animationFrameCallback = requestAnimationFrameSpy.mock.calls[0][0];
+
+            window.scrollY = 20;
+            window.innerHeight = 70;
+            Object.defineProperty(infiniteScroll.divContentElem, 'scrollHeight', {
+                value: 100,
+            });
+
+            animationFrameCallback();
+            animationFrameCallback();
+
+            expect(infiniteScroll.hasBreachedThreshold).toBeTruthy();
+            expect(dispatchEventSpy).toHaveBeenCalledTimes(1);
+            expect(dispatchEventSpy.mock.calls[0][0].type).toEqual('infinite-scroll-fetch');
         });
     });
 

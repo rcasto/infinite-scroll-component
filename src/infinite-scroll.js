@@ -16,10 +16,10 @@ export default class InfiniteScroll extends HTMLElement {
 
     static get observedAttributes() {
         return [
-          'data-height',
-          'data-threshold'
+            'data-height',
+            'data-threshold'
         ];
-      }
+    }
 
     constructor() {
         super();
@@ -32,6 +32,7 @@ export default class InfiniteScroll extends HTMLElement {
         this.divContentElem = null;
         this.thresholdLimit = 0.85;
         this.scrollAnimationTick = null;
+        this.hasBreachedThreshold = false;
         this.boundScrollTick = () => this.scrollTick();
     }
     connectedCallback() {
@@ -76,24 +77,29 @@ export default class InfiniteScroll extends HTMLElement {
         this.divContentElem.style.height = height;
     }
     scrollTick() {
-        if (!this.scrollAnimationTick) {
-            this.scrollAnimationTick = window.requestAnimationFrame(() => {
-                let currentThreshold = (window.scrollY + window.innerHeight) / this.divContentElem.scrollHeight;
+        if (this.scrollAnimationTick) {
+            return;
+        }
 
-                if (this.divContentElem.style.height) {
-                    currentThreshold = (this.divContentElem.scrollTop + this.divContentElem.clientHeight) / this.divContentElem.scrollHeight;
-                } 
+        this.scrollAnimationTick = window.requestAnimationFrame(() => {
+            let currentThreshold = (window.scrollY + window.innerHeight) / this.divContentElem.scrollHeight;
 
-                // May only want to fire once, when the threshold is reached
-                // As of now it would fire mutliple times
-                if (currentThreshold >= this.thresholdLimit) {
+            if (this.divContentElem.style.height) {
+                currentThreshold = (this.divContentElem.scrollTop + this.divContentElem.clientHeight) / this.divContentElem.scrollHeight;
+            }
+
+            if (currentThreshold >= this.thresholdLimit) {
+                if (!this.hasBreachedThreshold) {
                     const event = new Event('infinite-scroll-fetch');
+                    this.hasBreachedThreshold = true;
                     window.dispatchEvent(event);
                 }
+            } else {
+                this.hasBreachedThreshold = false;
+            }
 
-                this.scrollAnimationTick = null;
-            });
-        }
+            this.scrollAnimationTick = null;
+        });
     }
 }
 
