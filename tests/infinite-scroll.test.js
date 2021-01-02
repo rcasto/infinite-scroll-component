@@ -304,6 +304,32 @@ describe('infinite-scroll Tests', () => {
             expect(dispatchEventSpy).toHaveBeenCalledTimes(1);
             expect(dispatchEventSpy.mock.calls[0][0].type).toEqual('infinite-scroll-fetch');
         });
+
+        it('can reset hasThresholdBreached flag when threshold is no longer breached (after content is added)', () => {
+            const requestAnimationFrameSpy = jest.spyOn(window, 'requestAnimationFrame');
+            const infiniteScroll = new InfinteScroll();
+
+            infiniteScroll.connectedCallback();
+            infiniteScroll.scrollTick();
+
+            const animationFrameCallback = requestAnimationFrameSpy.mock.calls[0][0];
+
+            window.scrollY = 20;
+            window.innerHeight = 70;
+            Object.defineProperty(infiniteScroll.divContentElem, 'scrollHeight', {
+                value: 100,
+                writable: true,
+            });
+
+            animationFrameCallback();
+
+            expect(infiniteScroll.hasBreachedThreshold).toBeTruthy();
+
+            infiniteScroll.divContentElem.scrollHeight = 200; // no longer breaches threshold
+            animationFrameCallback();
+
+            expect(infiniteScroll.hasBreachedThreshold).toBeFalsy();
+        });
     });
 
     afterEach(() => {
