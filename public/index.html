@@ -19,8 +19,6 @@
 
     <script async src="infinite-scroll.js"></script>
     <script>
-        let isFetching = false;
-
         function getRandomMemes(count = 10) {
             const memeApiUrl = `https://meme-api.herokuapp.com/gimme/${count}`;
             return fetch(memeApiUrl)
@@ -35,12 +33,6 @@
         }
 
         async function init() {
-            if (isFetching) {
-                return;
-            }
-
-            isFetching = true;
-
             const memeUrls = await getRandomMemes();
             const imageElems = memeUrls.map(memeUrl => createImageElem(memeUrl));
 
@@ -49,8 +41,6 @@
                 fragment.appendChild(imageElem);
             });
             infiniteScrollElem.appendChild(fragment);
-
-            isFetching = false;
         }
 
         const infiniteScrollElem = document.querySelector('infinite-scroll');
