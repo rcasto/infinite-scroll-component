@@ -30,10 +30,10 @@
     "test": "jest"
   },
   "author": "Richie Casto (https://github.com/rcasto)",
-  "homepage": "https://github.com/rcasto/infinite-scroll#readme",
+  "homepage": "https://github.com/rcasto/infinite-scroll-component#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/rcasto/infinite-scroll.git"
+    "url": "https://github.com/rcasto/infinite-scroll-component.git"
   },
   "keywords": [
     "infinite-scroll",
