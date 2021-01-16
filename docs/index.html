@@ -20,11 +20,27 @@
     <script type="module" src="https://cdn.jsdelivr.net/npm/infinite-scroll-component@0.0.3/dist/infinite-scroll.min.js"></script>
     <!-- <script defer src="infinite-scroll.js"></script> -->
     <script>
+        // https://github.com/F36/Meme_Api
         function getRandomMemes(count = 10) {
-            const memeApiUrl = `https://meme-api.herokuapp.com/gimme/${count}`;
+            if (!getRandomMemes.seenMemeSet) {
+                getRandomMemes.seenMemeSet = new Set();
+            }
+
+            // Always get the twice the amount of memes requested, bounding at 50 since that is the max
+            // fetched in one request via the API.
+            // This simply helps to ensure we likely get a different batch of unseen <count> memes each time
+            const fetchCount = Math.min(count * 2, 50);
+
+            const memeApiUrl = `https://meme-api.herokuapp.com/gimme/${fetchCount}`;
             return fetch(memeApiUrl)
                 .then(response => response.json())
-                .then(result => result.memes.map(meme => meme.url));
+                .then(result => result.memes.map(meme => meme.url))
+                .then(memeUrls => memeUrls.filter(memeUrl => !getRandomMemes.seenMemeSet.has(memeUrl)))
+                .then(uniqueMemeUrls => {
+                    const firstCountUniqueMeme = uniqueMemeUrls.slice(0, count);
+                    firstCountUniqueMeme.forEach(uniqueMeme => getRandomMemes.seenMemeSet.add(uniqueMeme));
+                    return firstCountUniqueMeme;
+                });
         }
 
         function createImageElem(url) {
