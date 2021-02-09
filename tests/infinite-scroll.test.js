@@ -332,6 +332,12 @@ describe('infinite-scroll Tests', () => {
         });
     });
 
+    describe('Failing test - on purpose', () => {
+        it('does fail', () => {
+            expect(1).toEqual(2);
+        });
+    });
+
     afterEach(() => {
         jest.clearAllMocks();
     });
