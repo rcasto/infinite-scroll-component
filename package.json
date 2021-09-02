@@ -41,5 +41,8 @@
     "scrolling",
     "web-component"
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "jest": {
+    "testEnvironment": "jsdom"
+  }
 }
