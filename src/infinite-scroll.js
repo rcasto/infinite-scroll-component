@@ -68,10 +68,14 @@ export default class InfiniteScroll extends HTMLElement {
             return;
         }
         if (height) {
-            this.divContentElem.addEventListener('scroll', this.boundScrollTick);
+            this.divContentElem.addEventListener('scroll', this.boundScrollTick, {
+                passive: true,
+            });
             window.removeEventListener('scroll', this.boundScrollTick);
         } else {
-            window.addEventListener('scroll', this.boundScrollTick);
+            window.addEventListener('scroll', this.boundScrollTick, {
+                passive: true,
+            });
             this.divContentElem.removeEventListener('scroll', this.boundScrollTick);
         }
         this.divContentElem.style.height = height;
@@ -90,9 +94,14 @@ export default class InfiniteScroll extends HTMLElement {
 
             if (currentThreshold >= this.thresholdLimit) {
                 if (!this.hasBreachedThreshold) {
-                    const event = new Event('infinite-scroll-fetch');
+                    const event = new CustomEvent('infinite-scroll-fetch', {
+                        detail: {
+                            elem: this,
+                        },
+                        bubbles: true,
+                    });
                     this.hasBreachedThreshold = true;
-                    window.dispatchEvent(event);
+                    this.dispatchEvent(event);
                 }
             } else {
                 this.hasBreachedThreshold = false;
