@@ -44,5 +44,6 @@ function handleInfiniteScrollFetchRequest() {
     // add to infinite scroll container
 }
 
-window.addEventListener('infinite-scroll-fetch', handleInfiniteScrollFetchRequest);
+const infiniteScrollElem = document.querySelector('infinite-scroll');
+infiniteScrollElem.addEventListener('infinite-scroll-fetch', handleInfiniteScrollFetchRequest);
 ```
